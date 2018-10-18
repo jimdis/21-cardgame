@@ -1,5 +1,6 @@
 'use strict'
 
+const Card = require('./src/Card')
 const deck = require('./src/deck')
 
 let playerHand = []
@@ -7,19 +8,17 @@ let dealerHand = []
 let playerHandSum = 0
 let dealerHandSum = 0
 
-function drawCard(who) {
-  let card = Math.floor(Math.random() * 14) + 1
-  // let card = deck.pop()
+function drawCard (who) {
+  let card = deck.pop()
   return who.push(card)
 }
 
-function handSum(hand) {
-  return hand.reduce((a, b) => a + b)
-  // måste filtrera ut J, Q, K, A, ge dem värden. A skiftar..
-  // return hand.reduce((a, b) => a + b.rank)
+function handSum (hand) {
+  hand.forEach(element => { element.convert(playerHandSum) }) // måste tänka om här - vill inte modifiera objektets rank, bara räkna ut en summa.
+  return hand.reduce((a, b) => a + b.rank, 0)
 }
 
-function playerDraw() {
+function playerDraw () {
   let threshold = 15
   do {
     drawCard(playerHand)
@@ -28,7 +27,7 @@ function playerDraw() {
   return playerHandSum
 }
 
-function dealerDraw() {
+function dealerDraw () {
   if (playerHandSum < 21) {
     do {
       drawCard(dealerHand)
@@ -38,7 +37,7 @@ function dealerDraw() {
   return dealerHandSum
 }
 
-function compareHands() {
+function compareHands () {
   if (playerHandSum > 21) {
     return 'Player is Bust, Dealer Wins'
   } else if (playerHandSum === 21) {
@@ -49,9 +48,13 @@ function compareHands() {
 }
 
 console.log(deck)
-
 console.log(playerDraw())
 console.log(playerHand)
 console.log(dealerDraw())
 console.log(dealerHand)
 console.log(compareHands())
+
+// let card1 = new Card('HEJ', 'K')
+// console.log(card1)
+// card1.convert(9)
+// console.log(card1)
