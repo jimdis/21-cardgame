@@ -12,10 +12,16 @@ function drawCard (who) {
   let card = deck.pop()
   return who.push(card)
 }
+let testHand = [{ suit: 'heart', rank: 3 }, { suit: 'spades', rank: 2 }]
+handSum(testHand)
 
 function handSum (hand) {
-  hand.forEach(element => { element.convert(playerHandSum) }) // måste tänka om här - vill inte modifiera objektets rank, bara räkna ut en summa.
-  return hand.reduce((a, b) => a + b.rank, 0)
+  let rankedHand = []
+  for (let i = 0; i < hand.length; i++) {
+    rankedHand.push(hand[i].rank) // fixa så klädda kort blir värden
+  }
+  console.log(rankedHand)
+  // return rankedHand.reduce((a, b) => a + b.rank, 0)
 }
 
 function playerDraw () {
