@@ -1,20 +1,25 @@
 'use strict'
 
+const deck = require('./src/deck')
+
 let playerHand = []
 let dealerHand = []
 let playerHandSum = 0
 let dealerHandSum = 0
 
-function drawCard (who) {
+function drawCard(who) {
   let card = Math.floor(Math.random() * 14) + 1
+  // let card = deck.pop()
   return who.push(card)
 }
 
-function handSum (who) {
-  return who.reduce((a, b) => a + b)
+function handSum(hand) {
+  return hand.reduce((a, b) => a + b)
+  // måste filtrera ut J, Q, K, A, ge dem värden. A skiftar..
+  // return hand.reduce((a, b) => a + b.rank)
 }
 
-function playerDraw () {
+function playerDraw() {
   let threshold = 15
   do {
     drawCard(playerHand)
@@ -23,7 +28,7 @@ function playerDraw () {
   return playerHandSum
 }
 
-function dealerDraw () {
+function dealerDraw() {
   if (playerHandSum < 21) {
     do {
       drawCard(dealerHand)
@@ -33,7 +38,7 @@ function dealerDraw () {
   return dealerHandSum
 }
 
-function compareHands () {
+function compareHands() {
   if (playerHandSum > 21) {
     return 'Player is Bust, Dealer Wins'
   } else if (playerHandSum === 21) {
@@ -43,11 +48,8 @@ function compareHands () {
   } else return `Dealer Wins with ${dealerHandSum} vs player's ${playerHandSum}`
 }
 
-// drawCard()
-// drawCard()
-// drawCard()
-// console.log(hand)
-// console.log(handSum())
+console.log(deck)
+
 console.log(playerDraw())
 console.log(playerHand)
 console.log(dealerDraw())
