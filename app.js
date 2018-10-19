@@ -2,65 +2,36 @@
 
 const Card = require('./src/Card')
 const deck = require('./src/deck')
+const Player = require('./src/Player')
+const Dealer = require('./src/Dealer')
 
-let playerHand = []
-let dealerHand = []
-let playerHandSum = 0
-let dealerHandSum = 0
-
-function drawCard (who) {
-  let card = deck.pop()
-  return who.push(card)
-}
-let testHand = [{ suit: 'heart', rank: 3 }, { suit: 'spades', rank: 2 }]
-handSum(testHand)
-
-function handSum (hand) {
-  let rankedHand = []
-  for (let i = 0; i < hand.length; i++) {
-    rankedHand.push(hand[i].rank) // fixa så klädda kort blir värden
-  }
-  console.log(rankedHand)
-  // return rankedHand.reduce((a, b) => a + b.rank, 0)
-}
-
-function playerDraw () {
-  let threshold = 15
+function game() {
+  player1.drawCard()
   do {
-    drawCard(playerHand)
-    playerHandSum = handSum(playerHand)
-  } while (playerHandSum < threshold)
-  return playerHandSum
-}
-
-function dealerDraw () {
-  if (playerHandSum < 21) {
+    player1.drawCard()
+  } while (player1.score < player1.threshold)
+  if (player1.score > 21) {
+    return 'Player is Bust, Dealer Wins!'
+  } else if (player1.score === 21) {
+    return 'Player Wins with 21!'
+  } else {
     do {
-      drawCard(dealerHand)
-      dealerHandSum = handSum(dealerHand)
-    } while (dealerHandSum < playerHandSum)
+      dealer.drawCard()
+    } while (dealer.score < player1.score)
+    if (dealer.score > 21) {
+      return 'Dealer is Bust, Player Wins!'
+    } else if (dealer.score === 21) {
+      return 'Dealer Wins with 21!'
+    } else return `Dealer Wins with ${dealer.score} vs player's ${player1.score}`
   }
-  return dealerHandSum
 }
 
-function compareHands () {
-  if (playerHandSum > 21) {
-    return 'Player is Bust, Dealer Wins'
-  } else if (playerHandSum === 21) {
-    return '21! Player Wins'
-  } else if (dealerHandSum > 21) {
-    return 'Dealer is Bust, Player Wins'
-  } else return `Dealer Wins with ${dealerHandSum} vs player's ${playerHandSum}`
-}
-
+let player1 = new Player(1)
+let dealer = new Dealer()
+deck.sort(() => Math.random() - 0.5) // test version!!
 console.log(deck)
-console.log(playerDraw())
-console.log(playerHand)
-console.log(dealerDraw())
-console.log(dealerHand)
-console.log(compareHands())
-
-// let card1 = new Card('HEJ', 'K')
-// console.log(card1)
-// card1.convert(9)
-// console.log(card1)
+console.log(player1)
+console.log(dealer)
+console.log(game())
+console.log(`Player's hand: ${player1.renderHand()}`)
+console.log(`Dealer's hand: ${dealer.renderHand()}`)
