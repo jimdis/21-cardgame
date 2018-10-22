@@ -4,6 +4,7 @@ const deck = require('./deck')
 
 class Dealer {
   constructor () {
+    this.threshold = 15
     this.hand = []
     this.score = 0
   }
