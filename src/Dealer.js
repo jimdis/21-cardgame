@@ -15,6 +15,7 @@ class Dealer {
 
   calculateScore () {
     let arr = []
+    let score = 0
     for (let i = 0; i < this.hand.length; i++) {
       let rank = this.hand[i].rank
       if (typeof rank === 'number') {
@@ -27,7 +28,9 @@ class Dealer {
         arr.push(13)
       }
     }
-    let score = arr.reduce((a, b) => a + b)
+    if (arr.length > 0) {
+      score = arr.reduce((a, b) => a + b)
+    }
     let aces = this.hand.filter(obj => obj.rank === 'A')
     if (aces.length === 0) {
       this.score = score
