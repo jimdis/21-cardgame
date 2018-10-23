@@ -1,18 +1,11 @@
 'use strict'
 
-const deck = require('./deck')
-
 class Player {
   constructor (playerNum) {
     this.playerNum = playerNum
     this.threshold = 15
     this.hand = []
     this.score = 0
-  }
-
-  drawCard () {
-    let card = deck.pop()
-    this.hand.push(card)
   }
 
   calculateScore () {

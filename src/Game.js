@@ -1,6 +1,6 @@
 'use strict'
 
-const deck = require('./deck')
+const Decks = require('./Decks')
 const Player = require('./Player')
 const Dealer = require('./Dealer')
 
@@ -8,6 +8,7 @@ class Game {
   constructor () {
     this.players = []
     this.dealer = new Dealer()
+    this.decks = new Decks()
   }
 
   start (numberOfPlayers) {
@@ -18,23 +19,38 @@ class Game {
   }
 
   play () {
+    this.decks.newDeck()
+    this.decks.shuffle()
     for (let i = 0; i < this.players.length; i++) {
       let player = this.players[i]
       let dealer = this.dealer
       dealer.hand = []
       dealer.score = 0
       do {
-        player.drawCard()
+        this.drawCard(player)
         player.calculateScore()
       } while (player.score < player.threshold && player.hand.length < 5)
       if (player.score < 21 && player.hand.length < 5) {
         do {
-          dealer.drawCard()
+          this.drawCard(dealer)
           dealer.calculateScore()
         } while (dealer.score < dealer.threshold)
       }
+      this.decks.discardPile = this.decks.discardPile.concat(player.hand, dealer.hand)
       console.log(this.result(player, dealer) + '\n')
+      console.log('Stock:')
+      console.log(this.decks.stock)
+      console.log('Discard Pile:')
+      console.log(this.decks.discardPile)
     }
+  }
+
+  drawCard (player) {
+    if (this.decks.stock.length === 1) {
+      this.decks.shuffle()
+    }
+    let card = this.decks.stock.pop()
+    player.hand.push(card)
   }
 
   result (player, dealer) {
@@ -68,7 +84,5 @@ Dealer Wins with ${dealer.score} vs player's ${player.score}`
     return result
   }
 }
-// console.log(`Player: ${player.renderHand()}, Score: ${player.score}`)
-//       console.log(`Dealer: ${dealer.renderHand()}, Score: ${dealer.score}`)
 
 module.exports = Game
