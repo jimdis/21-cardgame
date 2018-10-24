@@ -1,26 +1,27 @@
 'use strict'
 
-const Decks = require('./Decks')
+const deck = require('./deck')
 const Player = require('./Player')
 const Dealer = require('./Dealer')
 
 class Game {
-  constructor () {
-    this.players = []
+  constructor (numberOfPlayers) {
+    this.players = this.populateGame(numberOfPlayers)
     this.dealer = new Dealer()
-    this.decks = new Decks()
+    this.deck = deck.createDeck()
+    this.discardPile = []
   }
 
-  start (numberOfPlayers) {
+  populateGame (numberOfPlayers) {
+    let players = []
     for (let i = 0; i < numberOfPlayers; i++) {
-      this.players.push(new Player(i + 1))
+      players.push(new Player(i + 1))
     }
-    this.play()
+    return players
   }
 
   play () {
-    this.decks.newDeck()
-    this.decks.shuffle()
+    deck.shuffle(this.deck)
     for (let i = 0; i < this.players.length; i++) {
       this.drawCard(this.players[i])
     }
@@ -39,16 +40,18 @@ class Game {
           dealer.calculateScore()
         } while (dealer.score < dealer.threshold)
       }
-      this.decks.discardPile = this.decks.discardPile.concat(player.hand, dealer.hand)
+      this.discardPile = this.discardPile.concat(player.hand, dealer.hand)
       console.log(this.result(player, dealer) + '\n')
     }
   }
 
   drawCard (player) {
-    if (this.decks.stock.length === 1) {
-      this.decks.shuffle()
+    if (this.deck.length === 1) {
+      this.deck = this.deck.concat(this.discardPile)
+      this.discardPile = []
+      deck.shuffle(this.deck)
     }
-    let card = this.decks.stock.pop()
+    let card = this.deck.pop()
     player.hand.push(card)
   }
 
