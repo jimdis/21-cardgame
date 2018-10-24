@@ -22,6 +22,9 @@ class Game {
     this.decks.newDeck()
     this.decks.shuffle()
     for (let i = 0; i < this.players.length; i++) {
+      this.drawCard(this.players[i])
+    }
+    for (let i = 0; i < this.players.length; i++) {
       let player = this.players[i]
       let dealer = this.dealer
       dealer.hand = []
@@ -38,10 +41,6 @@ class Game {
       }
       this.decks.discardPile = this.decks.discardPile.concat(player.hand, dealer.hand)
       console.log(this.result(player, dealer) + '\n')
-      console.log('Stock:')
-      console.log(this.decks.stock)
-      console.log('Discard Pile:')
-      console.log(this.decks.discardPile)
     }
   }
 
