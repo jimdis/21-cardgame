@@ -5,7 +5,7 @@ const deck = require('./src/deck')
 const Player = require('./src/Player').default
 const Game = require('./src/Game')
 
-const numberOfPlayers = 25
+const numberOfPlayers = 3
 let game = new Game(numberOfPlayers)
 console.log(game.play())
 

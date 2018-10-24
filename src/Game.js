@@ -21,14 +21,14 @@ class Game {
 
   play () {
     deck.shuffle(this.deck)
+    // First card dealt to all players:
     for (let i = 0; i < this.players.length; i++) {
       this.drawCard(this.players[i])
     }
+    // Each player takes turns playing against dealer:
     for (let i = 0; i < this.players.length; i++) {
       let player = this.players[i]
       let dealer = this.dealer
-      dealer.hand = []
-      dealer.score = 0
       do {
         this.drawCard(player)
         player.calculateScore()
@@ -39,8 +39,12 @@ class Game {
           dealer.calculateScore()
         } while (dealer.score < dealer.threshold)
       }
-      this.discardPile = this.discardPile.concat(player.hand, dealer.hand)
+      // Log the result of each individual game:
       console.log(this.result(player, dealer) + '\n')
+
+      // Move player's and dealer's hands to discard pile and reset dealer score:
+      this.discardPile = this.discardPile.concat(player.hand.splice(0), dealer.hand.splice(0))
+      dealer.score = 0
     }
   }
 
