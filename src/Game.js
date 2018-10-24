@@ -2,12 +2,11 @@
 
 const deck = require('./deck')
 const Player = require('./Player')
-const Dealer = require('./Dealer')
 
 class Game {
   constructor (numberOfPlayers) {
     this.players = this.populateGame(numberOfPlayers)
-    this.dealer = new Dealer()
+    this.dealer = new Player('Dealer')
     this.deck = deck.createDeck()
     this.discardPile = []
   }
@@ -15,7 +14,7 @@ class Game {
   populateGame (numberOfPlayers) {
     let players = []
     for (let i = 0; i < numberOfPlayers; i++) {
-      players.push(new Player(i + 1))
+      players.push(new Player(`Player #${i + 1}`))
     }
     return players
   }
@@ -56,7 +55,7 @@ class Game {
   }
 
   result (player, dealer) {
-    let result = `Player #${player.playerNum}: ${player.renderHand()}. Score: ${player.score}.`
+    let result = `${player.name}: ${player.renderHand()}. Score: ${player.score}.`
     if (dealer.score > 0) {
       result += `
 Dealer: ${dealer.renderHand()}. Score: ${dealer.score}.`

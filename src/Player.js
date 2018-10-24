@@ -1,8 +1,8 @@
 'use strict'
 
 class Player {
-  constructor (playerNum) {
-    this.playerNum = playerNum
+  constructor (name) {
+    this.name = name
     this.threshold = 15
     this.hand = []
     this.score = 0

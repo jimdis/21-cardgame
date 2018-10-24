@@ -3,7 +3,6 @@
 const Card = require('./src/Card')
 const deck = require('./src/deck')
 const Player = require('./src/Player').default
-const Dealer = require('./src/Dealer')
 const Game = require('./src/Game')
 
 const numberOfPlayers = 25
