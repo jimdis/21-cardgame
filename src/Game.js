@@ -10,6 +10,7 @@ class Game {
     this.dealer = new Player('Dealer')
     this.deck = deck.createDeck()
     this.discardPile = []
+    this.result = ''
   }
 
   populateGame (numberOfPlayers) {
@@ -40,8 +41,8 @@ class Game {
           dealer.score = scoring.calculateScore(dealer.hand)
         } while (dealer.score < dealer.threshold)
       }
-      // Log the result of each individual game:
-      console.log(this.result(player, dealer) + '\n')
+      // Add the result of each individual play to result property:
+      this.result += scoring.toString(player, dealer)
 
       // Move player's and dealer's hands to discard pile and reset dealer score:
       this.discardPile = this.discardPile.concat(player.hand.splice(0), dealer.hand.splice(0))
@@ -57,37 +58,6 @@ class Game {
     }
     let card = this.deck.pop()
     player.hand.push(card)
-  }
-
-  result (player, dealer) {
-    let result = `${player.name}: ${player.renderHand()}. Score: ${player.score}.`
-    if (dealer.score > 0) {
-      result += `
-Dealer: ${dealer.renderHand()}. Score: ${dealer.score}.`
-    }
-    if (player.score > 21) {
-      result += `
-Player is Bust, Dealer Wins!`
-    } else if (player.score === 21) {
-      result += `
-Player Wins with 21!`
-    } else if (player.hand.length === 5) {
-      result += `
-Player wins with 5 cards < 21!`
-    } else if (player.score > dealer.score) {
-      result += `
-Player wins with ${player.score} vs dealer's ${dealer.score}.`
-    } else if (dealer.score > 21) {
-      result += `
-Dealer is Bust, Player Wins!`
-    } else if (dealer.score === 21) {
-      result += `
-Dealer Wins with 21!`
-    } else if (dealer.score >= player.score) {
-      result += `
-Dealer Wins with ${dealer.score} vs player's ${player.score}`
-    }
-    return result
   }
 }
 

@@ -3,19 +3,19 @@
 function calculateScore (hand) {
   let arr = []
   let score = 0
+  // 1: Calculate score without Aces:
   for (let i = 0; i < hand.length; i++) {
-    arr.push(scoringTable(hand[i].rank))
+    arr.push(scoreRank(hand[i].rank))
   }
-  // if (arr.length > 0) {
   score = arr.reduce((a, b) => a + b)
-  // }
-  let aces = hand.filter(obj => obj.rank === 'A') // TESTA BYTA NAMN PÅ obj TILL card
+  // 2: Calculate score with Aces:
+  let aces = hand.filter(card => card.rank === 'A')
   if (aces.length === 0) {
     return score
   } else return scoreAces(aces, score)
 }
 
-function scoringTable (rank) {
+function scoreRank (rank) {
   if (typeof rank === 'number') {
     return rank
   } else if (rank === 'J') {
@@ -36,4 +36,29 @@ function scoreAces (aces, score) {
   return score
 }
 
+function toString (player, dealer) {
+  let whitespace = player.name.length - dealer.name.length
+  let result = `${player.name}: ${player.renderHand()} (${player.score}) ${(player.score > 21) ? 'BUSTED!' : ''}`
+  if (dealer.score > 0) {
+    result += '\n' + 'Dealer: ' + ' '.repeat(whitespace) + `${dealer.renderHand()} (${dealer.score}) ${(dealer.score > 21) ? 'BUSTED!' : ''}`
+  }
+  if (player.score > 21) {
+    result += '\n' + `Player is Bust, Dealer Wins!` + '\n\n'
+  } else if (player.score === 21) {
+    result += '\n' + `Player Wins with 21!` + '\n\n'
+  } else if (player.hand.length === 5) {
+    result += '\n' + `Player wins with 5 cards < 21!` + '\n\n'
+  } else if (player.score > dealer.score) {
+    result += '\n' + `Player wins with ${player.score} vs dealer's ${dealer.score}.` + '\n\n'
+  } else if (dealer.score > 21) {
+    result += '\n' + `Dealer is Bust, Player Wins!` + '\n\n'
+  } else if (dealer.score === 21) {
+    result += '\n' + `Dealer Wins with 21!` + '\n\n'
+  } else if (dealer.score >= player.score) {
+    result += '\n' + `Dealer Wins with ${dealer.score} vs player's ${player.score}` + '\n\n'
+  }
+  return result
+}
+
 module.exports.calculateScore = calculateScore
+module.exports.toString = toString

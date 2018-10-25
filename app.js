@@ -5,9 +5,10 @@ const deck = require('./src/deck')
 const Player = require('./src/Player').default
 const Game = require('./src/Game')
 
-const numberOfPlayers = 3
+const numberOfPlayers = 10
 let game = new Game(numberOfPlayers)
-console.log(game.play())
+game.play()
+console.log(game.result)
 
 // console.log('Stock:')
 // console.log(this.decks.stock)

@@ -27,7 +27,5 @@ function shuffle (arr) {
   return input
 }
 
-// funktion för att stoppa in slänghög i deck: this.stock.concat(this.discardPile)
-
 module.exports.createDeck = createDeck
 module.exports.shuffle = shuffle
