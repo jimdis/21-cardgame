@@ -2,6 +2,7 @@
 
 const deck = require('./deck')
 const Player = require('./Player')
+const scoring = require('./scoring')
 
 class Game {
   constructor (numberOfPlayers) {
@@ -31,12 +32,12 @@ class Game {
       let dealer = this.dealer
       do {
         this.drawCard(player)
-        player.calculateScore()
+        player.score = scoring.calculateScore(player.hand)
       } while (player.score < player.threshold && player.hand.length < 5)
       if (player.score < 21 && player.hand.length < 5) {
         do {
           this.drawCard(dealer)
-          dealer.calculateScore()
+          dealer.score = scoring.calculateScore(dealer.hand)
         } while (dealer.score < dealer.threshold)
       }
       // Log the result of each individual game:
