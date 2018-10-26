@@ -47,9 +47,9 @@ function toString (player, dealer) {
   } else if (player.score === 21) {
     result += '\n' + `Player Wins with 21!` + '\n\n'
   } else if (player.hand.length === 5) {
-    result += '\n' + `Player wins with 5 cards < 21!` + '\n\n'
+    result += '\n' + `Player Wins with 5 cards < 21!` + '\n\n'
   } else if (player.score > dealer.score) {
-    result += '\n' + `Player wins with ${player.score} vs dealer's ${dealer.score}.` + '\n\n'
+    result += '\n' + `Player Wins with ${player.score} vs dealer's ${dealer.score}.` + '\n\n'
   } else if (dealer.score > 21) {
     result += '\n' + `Dealer is Bust, Player Wins!` + '\n\n'
   } else if (dealer.score === 21) {
