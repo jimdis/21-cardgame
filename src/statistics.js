@@ -104,4 +104,49 @@ function gatherData (numberOfGames, startThreshold, endThreshold) {
   return descriptiveStatistics
 }
 
+function optimalThreshold (opponentMin = 8, opponentMax = 15) {
+  let optimalThresholds = []
+  for (let i = opponentMin; i <= opponentMax; i++) {
+    let bestThreshold = {
+      threshold: 0,
+      winPercent: 0
+    }
+    for (let j = 5; j <= 19; j++) {
+      let playerWinRatio = testGames(1000, j, i).playerWins / 1000 * 100
+      console.log('Opponent threshold: ' + i + ', Your threshold: ' + j + ', Win ratio: ' + playerWinRatio)
+      if (playerWinRatio >= bestThreshold.winPercent) {
+        bestThreshold.winPercent = playerWinRatio
+        bestThreshold.threshold = j
+      }
+    }
+    optimalThresholds.push(bestThreshold.threshold)
+  }
+  console.log(optimalThresholds)
+  return mode(optimalThresholds).pop()
+}
+
+function mode (numbers) {
+  let sortedNumbers = numbers.slice().sort((a, b) => a - b)
+  let previousNumber = ''
+  let counter = 1
+  let counterMax = 1
+  let mode = sortedNumbers // If passed argument contains only one number.
+  for (let i = 0; i < sortedNumbers.length; i++) {
+    if (sortedNumbers[i] === previousNumber) {
+      counter++
+      if (counter > counterMax) {
+        mode = [sortedNumbers[i]]
+        counterMax = counter
+      } else if (counter === counterMax) {
+        mode.push(sortedNumbers[i])
+      }
+    } else {
+      previousNumber = sortedNumbers[i]
+      counter = 1
+    }
+  }
+  return mode
+}
+
 module.exports.gatherData = gatherData
+module.exports.optimalThreshold = optimalThreshold

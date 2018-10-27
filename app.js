@@ -6,7 +6,9 @@ const Player = require('./src/Player').default
 const Game = require('./src/Game')
 const statistics = require('./src/statistics')
 
-console.log(statistics.gatherData(100, 5, 20))
+console.log(statistics.optimalThreshold())
+
+// console.log(statistics.gatherData(100, 5, 20))
 
 // const numberOfPlayers = 10
 // let game = new Game(numberOfPlayers)
