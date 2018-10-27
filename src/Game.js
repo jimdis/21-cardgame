@@ -5,18 +5,18 @@ const Player = require('./Player')
 const scoring = require('./scoring')
 
 class Game {
-  constructor (numberOfPlayers) {
-    this.players = this.populateGame(numberOfPlayers)
-    this.dealer = new Player('Dealer')
+  constructor (numberOfPlayers, playersThreshold, dealerThreshold) {
+    this.players = this.populateGame(numberOfPlayers, playersThreshold)
+    this.dealer = new Player('Dealer', dealerThreshold)
     this.deck = deck.createDeck()
     this.discardPile = []
     this.result = ''
   }
 
-  populateGame (numberOfPlayers) {
+  populateGame (numberOfPlayers, playersThreshold) {
     let players = []
     for (let i = 0; i < numberOfPlayers; i++) {
-      players.push(new Player(`Player #${i + 1}`))
+      players.push(new Player(`Player #${i + 1}`, playersThreshold))
     }
     return players
   }

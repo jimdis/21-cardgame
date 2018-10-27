@@ -2,6 +2,31 @@
 
 const Game = require('./Game')
 
+function getOptimalThreshold (testSubject = 'player') {
+  let optimalThresholds = []
+  for (let i = 8; i <= 18; i++) {
+    let bestThreshold = {
+      threshold: 0,
+      winRatio: 0
+    }
+    for (let j = 5; j <= 19; j++) {
+      let winRatio
+      if (testSubject === 'player') {
+        winRatio = testGames(1000, j, i).playerWins / 1000 * 100
+        // console.log('Dealer threshold: ' + i + ', Player threshold: ' + j + ', Player win ratio: ' + playerWinRatio)
+      } else winRatio = testGames(1000, i, j).dealerWins / 1000 * 100
+      // console.log('Player threshold: ' + i + ', Dealer threshold: ' + j + ', Dealer Win ratio: ' + playerWinRatio)
+      if (winRatio >= bestThreshold.winRatio) {
+        bestThreshold.winRatio = winRatio
+        bestThreshold.threshold = j
+      }
+    }
+    optimalThresholds.push(bestThreshold.threshold)
+  }
+  // console.log(optimalThresholds)
+  return mode(optimalThresholds).pop()
+}
+
 function testGames (numberOfGames, playerThreshold, dealerThreshold) {
   let winner = []
   for (let i = 0; i < numberOfGames; i++) {
@@ -20,109 +45,6 @@ function testGames (numberOfGames, playerThreshold, dealerThreshold) {
     dealerWins: dealerWins.length
   }
   return statistics
-}
-
-function gatherData (numberOfGames, startThreshold, endThreshold) {
-  let defensiveThreshold = 8
-  let offensiveThreshold = 15
-  let logResults = `Games tested: ${numberOfGames}`
-  let statistics = {
-    playerVsDefDealer: {},
-    playerVsOffDealer: {},
-    dealerVsDefPlayer: {},
-    dealerVsOffPlayer: {}
-  }
-  // Test Optimal Player Threshold if Dealers is deemed Defensive
-  logResults += '\n\nPlayer vs Defensive Dealer:\n'
-  let winPercent = 0
-  let threshold = 0
-  for (let i = startThreshold; i < endThreshold; i++) {
-    let result = testGames(numberOfGames, i, defensiveThreshold)
-    let newWinPercent = Math.round(result.playerWins / numberOfGames * 100)
-    if (newWinPercent > winPercent) {
-      winPercent = newWinPercent
-      threshold = i
-    }
-    statistics.playerVsDefDealer.threshold = threshold
-    statistics.playerVsDefDealer.winPercent = winPercent
-    logResults += `Player Threshold: ${i}, Win ratio: ${Math.round(result.playerWins / numberOfGames * 100)}%` + '\n'
-    // dealerWins += `Dealer Threshold: ${defensiveThreshold}, Win ratio: ${result.dealerWins / numberOfGames * 100}%` + '\n'
-  }
-  // Test Optimal Player Threshold if Dealers is deemed Offensive
-  winPercent = 0
-  threshold = 0
-  logResults += '\n\nPlayer vs Offensive Dealer:\n'
-  for (let i = startThreshold; i < endThreshold; i++) {
-    let result = testGames(numberOfGames, i, offensiveThreshold)
-    let newWinPercent = Math.round(result.playerWins / numberOfGames * 100)
-    if (newWinPercent > winPercent) {
-      winPercent = newWinPercent
-      threshold = i
-    }
-    statistics.playerVsOffDealer.threshold = threshold
-    statistics.playerVsOffDealer.winPercent = winPercent
-    logResults += `Player Threshold: ${i}, Win ratio: ${Math.round(result.playerWins / numberOfGames * 100)}%` + '\n'
-    // dealerWins += `Dealer Threshold: ${offensiveThreshold}, Win ratio: ${result.dealerWins / numberOfGames * 100}%` + '\n'
-  }
-  // Test Optimal Dealer Threshold if Player is deemed Defensive
-  logResults += '\n\nDealer vs Defensive Player:\n'
-  winPercent = 0
-  threshold = 0
-  for (let i = startThreshold; i < endThreshold; i++) {
-    let result = testGames(numberOfGames, defensiveThreshold, i)
-    let newWinPercent = Math.round(result.dealerWins / numberOfGames * 100)
-    if (newWinPercent > winPercent) {
-      winPercent = newWinPercent
-      threshold = i
-    }
-    statistics.dealerVsDefPlayer.threshold = threshold
-    statistics.dealerVsDefPlayer.winPercent = winPercent
-    // playerWins += `Player Threshold: ${defensiveThreshold}, Win ratio: ${result.playerWins / numberOfGames * 100}%` + '\n'
-    logResults += `Dealer Threshold: ${i}, Win ratio: ${Math.round(result.dealerWins / numberOfGames * 100)}%` + '\n'
-  }
-  // Test Optimal Dealer Threshold if Player is deemed Offensive
-  logResults += '\n\nDealer vs Offensive Player:\n'
-  winPercent = 0
-  threshold = 0
-  for (let i = startThreshold; i < endThreshold; i++) {
-    let result = testGames(numberOfGames, offensiveThreshold, i)
-    let newWinPercent = Math.round(result.dealerWins / numberOfGames * 100)
-    if (newWinPercent > winPercent) {
-      winPercent = newWinPercent
-      threshold = i
-    }
-    statistics.dealerVsOffPlayer.threshold = threshold
-    statistics.dealerVsOffPlayer.winPercent = winPercent
-    // playerWins += `Player Threshold: ${offensiveThreshold}, Win ratio: ${result.playerWins / numberOfGames * 100}%` + '\n'
-    logResults += `Dealer Threshold: ${i}, Win ratio: ${Math.round(result.dealerWins / numberOfGames * 100)}%` + '\n'
-  }
-  console.log(logResults)
-
-  let descriptiveStatistics = `Tested ${numberOfGames} games.` + ' \n\n' +
-    `Optimal Threshold for Player who thinks Dealer is defensive: ${statistics.playerVsDefDealer.threshold}, which yields a win percentage of ${statistics.playerVsDefDealer.winPercent}%`
-  // Fortsätt här - gör en output för att få en fin sträng. En annan för att ta ut värdet på threshold som sedan kan sättas in som parameter i Game.
-  return descriptiveStatistics
-}
-
-function optimalThreshold (opponentMin = 8, opponentMax = 15) {
-  let optimalThresholds = []
-  for (let i = opponentMin; i <= opponentMax; i++) {
-    let bestThreshold = {
-      threshold: 0,
-      winPercent: 0
-    }
-    for (let j = 5; j <= 19; j++) {
-      let playerWinRatio = testGames(1000, j, i).playerWins / 1000 * 100
-      console.log('Opponent threshold: ' + i + ', Your threshold: ' + j + ', Win ratio: ' + playerWinRatio)
-      if (playerWinRatio >= bestThreshold.winPercent) {
-        bestThreshold.winPercent = playerWinRatio
-        bestThreshold.threshold = j
-      }
-    }
-    optimalThresholds.push(bestThreshold.threshold)
-  }
-  console.log(optimalThresholds)
-  return mode(optimalThresholds).pop()
 }
 
 function mode (numbers) {
@@ -148,5 +70,4 @@ function mode (numbers) {
   return mode
 }
 
-module.exports.gatherData = gatherData
-module.exports.optimalThreshold = optimalThreshold
+module.exports.getOptimalThreshold = getOptimalThreshold

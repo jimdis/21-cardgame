@@ -1,19 +1,18 @@
 'use strict'
 
-const Card = require('./src/Card')
-const deck = require('./src/deck')
-const Player = require('./src/Player').default
+// const Card = require('./src/Card')
+// const deck = require('./src/deck')
+// const Player = require('./src/Player')
 const Game = require('./src/Game')
 const statistics = require('./src/statistics')
 
-console.log(statistics.optimalThreshold())
-
-// console.log(statistics.gatherData(100, 5, 20))
-
-// const numberOfPlayers = 10
-// let game = new Game(numberOfPlayers)
-// game.play()
-// console.log(game.result)
+const numberOfPlayers = 10
+const dealerThreshold = statistics.getOptimalThreshold('dealer')
+const playerThreshold = statistics.getOptimalThreshold('player')
+let game = new Game(numberOfPlayers, playerThreshold, dealerThreshold)
+console.log(`Starting new game with ${numberOfPlayers} Players with optimized threshold set at ${playerThreshold} and one Dealer with optimized threshold set at ${dealerThreshold}`)
+game.play()
+console.log(game.result)
 
 // console.log('Stock:')
 // console.log(this.decks.stock)
