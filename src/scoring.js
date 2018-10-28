@@ -11,7 +11,7 @@
 /**
  * Returns a the score of the relevant hand using the game's rules.
  *
- * @param {array} hand - The relevant hand to be scored.
+ * @param {Array} hand - The relevant hand to be scored.
  * @returns {number} - Thr score of the relevant hand.
  */
 function calculateScore (hand) {
@@ -50,7 +50,7 @@ function scoreRank (rank) {
 /**
  * Returns the score of the Aces given the score excluding Aces.
  *
- * @param {array} aces - An array containing the Aces in a player's hand.
+ * @param {Array} aces - An array containing the Aces in a player's hand.
  * @param {number} score - The score of the player's hand excluding Aces.
  * @returns {number} - Returns the score of the Aces.
  */

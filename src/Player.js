@@ -12,7 +12,7 @@
  * Creates a JavaScript Player instance that represents a player.
  *
  * @param {string} name - The name of the player.
- * @param {*} threshold - The threshold score where the player will stop and not draw any more cards.
+ * @param {number} threshold - The threshold score where the player will stop and not draw any more cards.
  * @constructor
  */
 function Player (name, threshold) {
@@ -33,7 +33,7 @@ function Player (name, threshold) {
   /**
   * An array representing the hand of the player containing Card objects.
   *
-  * @type {array} - The hand of the player.
+  * @type {Array} - The hand of the player.
   */
   this.hand = []
 

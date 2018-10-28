@@ -39,7 +39,7 @@ class Game {
     /**
     * An array with each element containing a Player object
     *
-    * @type {array}
+    * @type {Array}
     */
     this.players = this.populateGame(numberOfPlayers, playersThreshold)
 
@@ -53,14 +53,14 @@ class Game {
     /**
     * An array with each element containing a Card object, representing a deck of playing cards.
     *
-    * @type {array}
+    * @type {Array}
     */
     this.deck = deck.createDeck()
 
     /**
     * An array with each element containing a Card object, representing the discard pile where already played cards are discarded.
     *
-    * @type {array}
+    * @type {Array}
     */
     this.discardPile = []
 
@@ -77,7 +77,7 @@ class Game {
    *
    * @param {number} numberOfPlayers - The number of new Player objects in the returned array.
    * @param {number} playersThreshold - The threshold score of the players.
-   * @returns {array} - An array with Player objects.
+   * @returns {Array} - An array with Player objects.
    * @memberof Game
    */
   populateGame (numberOfPlayers, playersThreshold) {
