@@ -2,7 +2,7 @@
 
 const Game = require('./Game')
 
-function getOptimalThreshold (testSubject = 'player') {
+function getOptimalThreshold (numberOfRuns, testSubject = 'player') {
   let optimalThresholds = []
   for (let i = 8; i <= 18; i++) {
     let bestThreshold = {
@@ -12,9 +12,9 @@ function getOptimalThreshold (testSubject = 'player') {
     for (let j = 5; j <= 19; j++) {
       let winRatio
       if (testSubject === 'player') {
-        winRatio = testGames(1000, j, i).playerWins / 1000 * 100
+        winRatio = testGames(numberOfRuns, j, i).playerWins / numberOfRuns * 100
         // console.log('Dealer threshold: ' + i + ', Player threshold: ' + j + ', Player win ratio: ' + playerWinRatio)
-      } else winRatio = testGames(1000, i, j).dealerWins / 1000 * 100
+      } else winRatio = testGames(numberOfRuns, i, j).dealerWins / numberOfRuns * 100
       // console.log('Player threshold: ' + i + ', Dealer threshold: ' + j + ', Dealer Win ratio: ' + playerWinRatio)
       if (winRatio >= bestThreshold.winRatio) {
         bestThreshold.winRatio = winRatio

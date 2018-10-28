@@ -1,20 +1,40 @@
+/**
+ * Module for scoring.
+ *
+ * @module src/scoring
+ * @author Jim Disenstam
+ * @version 1.0
+ */
+
 'use strict'
 
+/**
+ * Returns a the score of the relevant hand using the game's rules.
+ *
+ * @param {array} hand - The relevant hand to be scored.
+ * @returns {number} - Thr score of the relevant hand.
+ */
 function calculateScore (hand) {
   let arr = []
   let score = 0
-  // 1: Calculate score without Aces:
+  // 1: Calculate score excluding Aces:
   for (let i = 0; i < hand.length; i++) {
     arr.push(scoreRank(hand[i].rank))
   }
   score = arr.reduce((a, b) => a + b)
-  // 2: Calculate score with Aces:
+  // 2: Calculate score including Aces:
   let aces = hand.filter(card => card.rank === 'A')
   if (aces.length === 0) {
     return score
   } else return scoreAces(aces, score)
 }
 
+/**
+ * Returns the score of a Card given the Card's rank. Excludes Aces.
+ *
+ * @param {number, string} rank - The value of the rank property of the Card.
+ * @returns {number} - The score given the Card's rank.
+ */
 function scoreRank (rank) {
   if (typeof rank === 'number') {
     return rank
@@ -27,6 +47,13 @@ function scoreRank (rank) {
   } else return 0
 }
 
+/**
+ * Returns the score of the Aces given the score excluding Aces.
+ *
+ * @param {array} aces - An array containing the Aces in a player's hand.
+ * @param {number} score - The score of the player's hand excluding Aces.
+ * @returns {number} - Returns the score of the Aces.
+ */
 function scoreAces (aces, score) {
   for (let i = 0; i < aces.length; i++) {
     if (score + 14 + aces.length - i <= 21) {
@@ -36,6 +63,13 @@ function scoreAces (aces, score) {
   return score
 }
 
+/**
+ * Returns a string that logs the hands and scores of each individual player vs dealer match.
+ *
+ * @param {Object} player - The relevant player.
+ * @param {Object} dealer - The relevant dealer.
+ * @returns {string} - A string that logs the hands and scores of each individual player vs dealer match.
+ */
 function toString (player, dealer) {
   let whitespace = player.name.length - dealer.name.length
   let result = `${player.name}: ${player.renderHand()} (${player.score}) ${(player.score > 21) ? 'BUSTED!' : ''}`

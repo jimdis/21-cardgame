@@ -1,18 +1,85 @@
+/**
+ * Module for Game.
+ *
+ * @module src/Game
+ * @author Jim Disenstam
+ * @version 1.0
+ */
+
 'use strict'
 
 const deck = require('./deck')
 const Player = require('./Player')
 const scoring = require('./scoring')
 
+/**
+ * Represents a game of '21'.
+ *
+ * @class Game
+ */
 class Game {
-  constructor (numberOfPlayers, playersThreshold, dealerThreshold) {
+  /**
+   * Creates an instance of Game.
+   * @param {number} [numberOfPlayers=1] - The number of players in the Game. Accepts Mininum 1, Maximum 42.
+   * @param {number} [playersThreshold=15] - The threshold score where the players will stop and not draw any more cards. Accepts Minimum 1, Maximum 21.
+   * @param {number} [dealerThreshold=15] - The threshold score where the dealer will stop and not draw any more cards. Accepts Minimum 1, Maximum 21.
+   * @memberof Game
+   */
+  constructor (numberOfPlayers = 1, playersThreshold = 15, dealerThreshold = 15) {
+    if (numberOfPlayers < 1 || numberOfPlayers > 42 || typeof numberOfPlayers !== 'number') {
+      throw Error('The passed argument numberOfPlayers must be a number between 1 and 42')
+    }
+    if (playersThreshold < 1 || playersThreshold > 21 || typeof playersThreshold !== 'number') {
+      throw Error('The passed argument playersThreshold must be a number between 1 and 21')
+    }
+    if (dealerThreshold < 1 || dealerThreshold > 21 || typeof dealerThreshold !== 'number') {
+      throw Error('The passed argument dealerThreshold must be a number between 1 and 21')
+    }
+
+    /**
+    * An array with each element containing a Player object
+    *
+    * @type {array}
+    */
     this.players = this.populateGame(numberOfPlayers, playersThreshold)
+
+    /**
+    * A Player object named 'Dealer', representing the Dealer in the Game.
+    *
+    * @type {object}
+    */
     this.dealer = new Player('Dealer', dealerThreshold)
+
+    /**
+    * An array with each element containing a Card object, representing a deck of playing cards.
+    *
+    * @type {array}
+    */
     this.deck = deck.createDeck()
+
+    /**
+    * An array with each element containing a Card object, representing the discard pile where already played cards are discarded.
+    *
+    * @type {array}
+    */
     this.discardPile = []
+
+    /**
+    * A string that logs the hands and scores of each individual player vs dealer match.
+    *
+    * @type {string}
+    */
     this.result = ''
   }
 
+  /**
+   * Returns an array with Player objects.
+   *
+   * @param {number} numberOfPlayers - The number of new Player objects in the returned array.
+   * @param {number} playersThreshold - The threshold score of the players.
+   * @returns {array} - An array with Player objects.
+   * @memberof Game
+   */
   populateGame (numberOfPlayers, playersThreshold) {
     let players = []
     for (let i = 0; i < numberOfPlayers; i++) {
@@ -21,6 +88,11 @@ class Game {
     return players
   }
 
+  /**
+   * Triggers the Game to start playing according to the set rules and updates the relevant properties in the Game object accordingly.
+   *
+   * @memberof Game
+   */
   play () {
     deck.shuffle(this.deck)
     // First card dealt to all players:
@@ -50,6 +122,13 @@ class Game {
     }
   }
 
+  /**
+   * Pops a card out of the deck array and pushes it to the relevant player's hand array.
+   * If deck array only contains one Card object, the discardPile array is concatenated into the deck array and then shuffled.
+   *
+   * @param {object} player - The relevant player (or Dealer) drawing the card.
+   * @memberof Game
+   */
   drawCard (player) {
     if (this.deck.length === 1) {
       this.deck = this.deck.concat(this.discardPile)

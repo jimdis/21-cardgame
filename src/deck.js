@@ -1,6 +1,20 @@
+/**
+ * Module for deck.
+ *
+ * @module src/deck
+ * @author Jim Disenstam
+ * @version 1.0
+ */
+
 'use strict'
+
 const Card = require('./Card')
 
+/**
+ * Returns an array with Card objects representing a deck of 52 playing cards.
+ *
+ * @returns {array} - An array with Card objects representing a deck of 52 playing cards.
+ */
 function createDeck () {
   let deck = []
   let suits = ['♥', '♦', '♣', '♠']
@@ -13,7 +27,13 @@ function createDeck () {
   return deck
 }
 
-// Fisher-Yates shuffling algorithm, adapted from https://www.kirupa.com/html5/shuffling_array_js.htm
+/**
+ * Takes an array as an argument and returns a shuffled copy of that array.
+ * Fisher-Yates shuffling algorithm, adapted from https://www.kirupa.com/html5/shuffling_array_js.htm
+ *
+ * @param {array} arr - The array that needs shuffling.
+ * @returns {array} - A shuffled copy of the array passed as an argument.
+ */
 function shuffle (arr) {
   var input = arr
 
