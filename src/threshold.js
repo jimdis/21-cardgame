@@ -1,9 +1,9 @@
 /**
- * Module for statistics.
+ * Module for setting optimal threshold.
  *
- * @module src/statistics
+ * @module src/threshold
  * @author Jim Disenstam
- * @version 1.0
+ * @version 1.1
  */
 
 'use strict'
