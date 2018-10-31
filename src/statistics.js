@@ -13,16 +13,18 @@ const Game = require('./Game')
 /**
  * Returns a number representing the optimal threshold setting to use against opponent.
  *
- * @param {number} numberOfRuns - Number of times a game is played to test each threshold setting.
- * @param {string} [testSubject='player'] - The test subject, either 'player' or 'dealer'.
+ * @param {number} numberOfRuns - Number of times a game is simulated to test each threshold setting.
+ * @param {string} [testSubject='player'] - The test subject, either 'player' or 'dealer'. Defaults to 'player'.
+ * @throws {Error} The passed argument numberOfRuns must be a number between 1 and 10000.
+ * @throws {Error} The passed argument testSubject must be either 'player' or 'dealer'.
  * @returns {number} - The optimal threshold setting.
  */
-function getOptimalThreshold (numberOfRuns, testSubject = 'player') {
-  if (numberOfRuns < 1 || typeof numberOfRuns !== 'number') {
-    throw Error('The passed argument numberOfRuns must be a number > 0')
+function getOptimalThreshold (numberOfRuns = 1000, testSubject = 'player') {
+  if (numberOfRuns < 1 || numberOfRuns > 10000 || typeof numberOfRuns !== 'number') {
+    throw Error('The passed argument numberOfRuns must be a number between 1 and 10000.')
   }
   if (testSubject !== 'player' && testSubject !== 'dealer') {
-    throw Error('The passed argument testSubject must be either \'player\' or \'dealer\'')
+    throw Error('The passed argument testSubject must be either \'player\' or \'dealer\'.')
   }
   let optimalThresholds = []
   // Outer loop: Test optimal threshold for each of opponent's thresholds between 8-18.

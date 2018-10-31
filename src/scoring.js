@@ -18,9 +18,7 @@ function calculateScore (hand) {
   let arr = []
   let score = 0
   // 1: Calculate score excluding Aces:
-  for (let i = 0; i < hand.length; i++) {
-    arr.push(scoreRank(hand[i].rank))
-  }
+  hand.forEach(card => arr.push(scoreRank(card.rank)))
   score = arr.reduce((a, b) => a + b)
   // 2: Calculate score including Aces:
   let aces = hand.filter(card => card.rank === 'A')
@@ -32,7 +30,7 @@ function calculateScore (hand) {
 /**
  * Returns the score of a Card given the Card's rank. Excludes Aces.
  *
- * @param {number, string} rank - The value of the rank property of the Card.
+ * @param {number || string} rank - The value of the rank property of the Card.
  * @returns {number} - The score given the Card's rank.
  */
 function scoreRank (rank) {

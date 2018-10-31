@@ -1,5 +1,6 @@
 /**
  * The starting point of the application.
+ * Please set the configuration for number of players and thresholds in config.js!
  *
  * @author Jim Disenstam
  * @version 1.0
@@ -7,17 +8,17 @@
 
 'use strict'
 
+const config = require('./src/config')
 const Game = require('./src/Game')
-const statistics = require('./src/statistics')
 
-const numberOfPlayers = 10
-const dealerThreshold = statistics.getOptimalThreshold(1000, 'dealer')
-const playerThreshold = statistics.getOptimalThreshold(1000, 'player')
-
-let game = new Game(numberOfPlayers, playerThreshold, dealerThreshold)
-
-console.log(`Starting new game with ${numberOfPlayers} Players with optimized threshold set at ${playerThreshold} and one Dealer with optimized threshold set at ${dealerThreshold}` + '\n')
-
-game.play()
-
-console.log(game.result)
+try {
+  const numberOfPlayers = config.parameters.numberOfPlayers
+  const playersThreshold = config.getThreshold('players')
+  const dealerThreshold = config.getThreshold('dealer')
+  let game = new Game(numberOfPlayers, playersThreshold, dealerThreshold)
+  console.log(`Starting new game with ${numberOfPlayers} Players and one Dealer with ${(typeof config.parameters.playersThreshold === 'string') ? 'optimized' : 'manual'} threshold set at ${playersThreshold} for Players and ${(typeof config.parameters.dealerThreshold === 'string') ? 'optimized' : 'manual'} threshold set at ${dealerThreshold} for Dealer` + '\n')
+  game.play()
+  console.log(game.result)
+} catch (e) {
+  console.error('ERROR: ', e.message)
+}

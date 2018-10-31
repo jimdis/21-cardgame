@@ -23,17 +23,20 @@ class Game {
    * @param {number} [numberOfPlayers=1] - The number of players in the Game. Accepts Mininum 1, Maximum 42.
    * @param {number} [playersThreshold=15] - The threshold score where the players will stop and not draw any more cards. Accepts Minimum 1, Maximum 21.
    * @param {number} [dealerThreshold=15] - The threshold score where the dealer will stop and not draw any more cards. Accepts Minimum 1, Maximum 21.
+   * @throws {Error} The passed argument numberOfPlayers must be a number between 1 and 42.
+   * @throws {Error} The passed argument playersThreshold must be a number between 1 and 21.
+   * @throws {Error} The passed argument dealerThreshold must be a number between 1 and 21.
    * @memberof Game
    */
-  constructor (numberOfPlayers = 1, playersThreshold = 15, dealerThreshold = 15) {
+  constructor (numberOfPlayers, playersThreshold, dealerThreshold) {
     if (numberOfPlayers < 1 || numberOfPlayers > 42 || typeof numberOfPlayers !== 'number') {
-      throw Error('The passed argument numberOfPlayers must be a number between 1 and 42')
+      throw Error('The passed argument numberOfPlayers must be a number between 1 and 42.')
     }
     if (playersThreshold < 1 || playersThreshold > 21 || typeof playersThreshold !== 'number') {
-      throw Error('The passed argument playersThreshold must be a number between 1 and 21')
+      throw Error('The passed argument playersThreshold must be a number between 1 and 21.')
     }
     if (dealerThreshold < 1 || dealerThreshold > 21 || typeof dealerThreshold !== 'number') {
-      throw Error('The passed argument dealerThreshold must be a number between 1 and 21')
+      throw Error('The passed argument dealerThreshold must be a number between 1 and 21.')
     }
 
     /**
@@ -73,7 +76,7 @@ class Game {
   }
 
   /**
-   * Returns an array with Player objects.
+   * Returns an array with Player objects named 'Player#1', 'Player#2', ..., 'Player#n' where n = numberOfPlayers.
    *
    * @param {number} numberOfPlayers - The number of new Player objects in the returned array.
    * @param {number} playersThreshold - The threshold score of the players.
@@ -96,9 +99,7 @@ class Game {
   play () {
     deck.shuffle(this.deck)
     // First card dealt to all players:
-    for (let i = 0; i < this.players.length; i++) {
-      this.drawCard(this.players[i])
-    }
+    this.players.forEach(player => this.drawCard(player))
     // Each player takes turns playing against dealer:
     for (let i = 0; i < this.players.length; i++) {
       let player = this.players[i]
@@ -117,7 +118,8 @@ class Game {
       this.result += scoring.toString(player, dealer)
 
       // Move player's and dealer's hands to discard pile and reset dealer score:
-      this.discardPile = this.discardPile.concat(player.hand.splice(0), dealer.hand.splice(0))
+      this.discardPile = this.discardPile
+        .concat(player.hand.splice(0), dealer.hand.splice(0))
       dealer.score = 0
     }
   }

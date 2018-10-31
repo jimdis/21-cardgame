@@ -28,6 +28,8 @@ function Card (suit, rank) {
   * @type {number, string} - The rank of the card.
   */
   this.rank = rank
+
+  Object.freeze(this)
 }
 
 module.exports = Card

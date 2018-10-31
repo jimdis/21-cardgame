@@ -52,9 +52,7 @@ function Player (name, threshold) {
  */
 Player.prototype.renderHand = function () {
   let arr = []
-  for (let i = 0; i < this.hand.length; i++) {
-    arr.push((this.hand[i].suit + this.hand[i].rank))
-  }
+  this.hand.forEach(card => arr.push(card.suit + card.rank))
   return arr.join(', ')
 }
 
