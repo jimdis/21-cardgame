@@ -12,8 +12,8 @@ const Game = require('./src/Game')
 
 const settings = config.settings
 
-// Set number of players. A number between 1 and 42:
-settings.numberOfPlayers = 42
+// Set number of players. A number between 1 and 37:
+settings.numberOfPlayers = 5
 
 // Set Threshold where Players will stop drawing new cards. Insert number between 1 and 21, or 'auto':
 settings.playersThreshold = 'auto'

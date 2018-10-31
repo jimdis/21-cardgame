@@ -20,17 +20,17 @@ const scoring = require('./scoring')
 class Game {
   /**
    * Creates an instance of Game.
-   * @param {number} [numberOfPlayers=1] - The number of players in the Game. Accepts Mininum 1, Maximum 42.
+   * @param {number} [numberOfPlayers=1] - The number of players in the Game. Accepts Mininum 1, Maximum 37.
    * @param {number} [playersThreshold=15] - The threshold score where the players will stop and not draw any more cards. Accepts Minimum 1, Maximum 21.
    * @param {number} [dealerThreshold=15] - The threshold score where the dealer will stop and not draw any more cards. Accepts Minimum 1, Maximum 21.
-   * @throws {Error} The passed argument numberOfPlayers must be a number between 1 and 42.
+   * @throws {Error} The passed argument numberOfPlayers must be a number between 1 and 37.
    * @throws {Error} The passed argument playersThreshold must be a number between 1 and 21.
    * @throws {Error} The passed argument dealerThreshold must be a number between 1 and 21.
    * @memberof Game
    */
   constructor (numberOfPlayers, playersThreshold, dealerThreshold) {
-    if (numberOfPlayers < 1 || numberOfPlayers > 42 || typeof numberOfPlayers !== 'number') {
-      throw Error('The passed argument numberOfPlayers must be a number between 1 and 42.')
+    if (numberOfPlayers < 1 || numberOfPlayers > 37 || typeof numberOfPlayers !== 'number') {
+      throw Error('The passed argument numberOfPlayers must be a number between 1 and 37.')
     }
     if (playersThreshold < 1 || playersThreshold > 21 || typeof playersThreshold !== 'number') {
       throw Error('The passed argument playersThreshold must be a number between 1 and 21.')
