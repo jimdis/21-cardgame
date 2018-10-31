@@ -11,12 +11,13 @@
 const config = require('./src/config')
 const Game = require('./src/Game')
 
+const settings = config.settings
 try {
-  const numberOfPlayers = config.parameters.numberOfPlayers
-  const playersThreshold = config.getThreshold('players')
-  const dealerThreshold = config.getThreshold('dealer')
+  const numberOfPlayers = settings.numberOfPlayers
+  const playersThreshold = config.getThreshold.call(settings, 'player')
+  const dealerThreshold = config.getThreshold.call(settings, 'dealer')
   let game = new Game(numberOfPlayers, playersThreshold, dealerThreshold)
-  console.log(`Starting new game with ${numberOfPlayers} Players and one Dealer with ${(typeof config.parameters.playersThreshold === 'string') ? 'optimized' : 'manual'} threshold set at ${playersThreshold} for Players and ${(typeof config.parameters.dealerThreshold === 'string') ? 'optimized' : 'manual'} threshold set at ${dealerThreshold} for Dealer` + '\n')
+  console.log(`Starting new game with ${numberOfPlayers} Players with ${(typeof settings.playersThreshold === 'string') ? 'optimized' : 'manual'} threshold set at ${playersThreshold}, and one Dealer with ${(typeof settings.dealerThreshold === 'string') ? 'optimized' : 'manual'} threshold set at ${dealerThreshold}` + '\n')
   game.play()
   console.log(game.result)
 } catch (e) {

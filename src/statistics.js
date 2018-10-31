@@ -19,9 +19,9 @@ const Game = require('./Game')
  * @throws {Error} The passed argument testSubject must be either 'player' or 'dealer'.
  * @returns {number} - The optimal threshold setting.
  */
-function getOptimalThreshold (numberOfRuns = 1000, testSubject = 'player') {
+function getOptimalThreshold (numberOfRuns, testSubject) {
   if (numberOfRuns < 1 || numberOfRuns > 10000 || typeof numberOfRuns !== 'number') {
-    throw Error('The passed argument numberOfRuns must be a number between 1 and 10000.')
+    throw Error('The passed argument in numberOfRuns must be a number between 1 and 10000.')
   }
   if (testSubject !== 'player' && testSubject !== 'dealer') {
     throw Error('The passed argument testSubject must be either \'player\' or \'dealer\'.')
@@ -46,8 +46,9 @@ function getOptimalThreshold (numberOfRuns = 1000, testSubject = 'player') {
     }
     optimalThresholds.push(bestThreshold.threshold)
   }
-  // Find the optimal thresholds and pick the highest one:
-  return mode(optimalThresholds).pop()
+  // Find the most frequent optimal thresholds and pick a random one:
+  let bestThresholds = mode(optimalThresholds)
+  return bestThresholds[Math.floor(Math.random() * bestThresholds.length)]
 }
 
 /**
@@ -61,9 +62,7 @@ function getOptimalThreshold (numberOfRuns = 1000, testSubject = 'player') {
 function testGames (numberOfGames, playerThreshold, dealerThreshold) {
   let winner = []
   for (let i = 0; i < numberOfGames; i++) {
-    let game = new Game(1)
-    game.players[0].threshold = playerThreshold
-    game.dealer.threshold = dealerThreshold
+    let game = new Game(1, playerThreshold, dealerThreshold)
     game.play()
     if (game.result.includes('Player Wins')) {
       winner.push('P')
